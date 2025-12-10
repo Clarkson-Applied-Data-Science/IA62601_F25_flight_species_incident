@@ -1,9 +1,11 @@
 SPECIES_PATH = "./data/species_details.csv"
-BATCH_SIZE = 5000 
+BATCH_SIZE = 5000
 AMBIGUOUS_SPECIES_PATH = "./data/ambiguous_species.csv"
 SPECIES_PATH = "./data/species_details.csv"
 RAW_DATABASE_PATH = './data/raw_database.csv'
+CLEANED_DATABASE_PATH = './data/cleaned_database.csv'
 AIRPORT_DATA_PATH = "./data/airport_data.csv"
 AIRPORT_LOCATION_PATH = "./data/airport_location_detail.csv"
 URL_AIRPORT = "https://api.aviationstack.com/v1/airports?access_key="
 URL_SPECIES = "https://api.gbif.org/v1/species/search"
+API = "https://api.ebird.org/v2/data/obs/KZ/recent"
