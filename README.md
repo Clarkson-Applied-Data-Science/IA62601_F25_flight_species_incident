@@ -35,8 +35,6 @@ I have added the foreign key for depiction but you can remove them to make it ea
 
 ## Questions & Analyses
 
-### Dynamic summaries
-
 #### 1. By Species / Taxonomic Class
 
 **1.1 Species-level frequency**  

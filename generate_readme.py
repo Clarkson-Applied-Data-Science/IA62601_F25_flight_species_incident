@@ -29,8 +29,6 @@ def markdown():
     species_rows = [(i + 1, row["species_name"], row["taxonomic_class"],
                      row["incident_count"]) for i, row in enumerate(species)]
     sections.append(dedent(f"""
-### Dynamic summaries
-
 #### 1. By Species / Taxonomic Class
 
 **1.1 Species-level frequency**  
