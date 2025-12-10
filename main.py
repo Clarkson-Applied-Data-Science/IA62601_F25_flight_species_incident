@@ -1,60 +1,15 @@
 import csv
-import requests
-from datetime import datetime, timezone, timedelta
-from data_fetcher import fetch_airport_data, fetch_species_data
+from datetime import datetime
+from tools import config, connect_to_db, batch_reader, str_to_float_convertor, str_to_int_convertor
 import global_vars as gv
-import json
-import pymysql
-import yaml
-from pathlib import Path
 import re
-from decimal import Decimal
 
-config = yaml.safe_load(Path('config.yml').read_text())
 flight_set = {}
 airport_set = {}
 aircraft_set = {}
 airlines_set = {}
 species_set = {}
 isheader = True
-
-
-def connect_to_db():
-    conn = pymysql.connect(host=config['db']['host'], port=3306, user=config['db']
-                           ['user'], passwd=config['db']['pw'], db=config['db']['db'], autocommit=True)
-    return conn.cursor(pymysql.cursors.DictCursor)
-
-
-def batch_reader(file_path, batch_size=10):
-    with open(file_path, 'r') as f:
-        batch = []
-        for line in f:
-            batch.append(line)
-            if len(batch) == batch_size:
-                yield batch
-                batch = []
-        if batch:
-            yield batch
-
-
-def str_to_float_convertor(to_be_converted):
-    val = None
-    try:
-        val = float(to_be_converted)
-    except Exception as e:
-        pass
-        # print(to_be_converted, e)
-    return val
-
-
-def str_to_int_convertor(to_be_converted):
-    val = None
-    try:
-        val = int(to_be_converted)
-    except Exception as e:
-        pass
-        # print(to_be_converted,e)
-    return val
 
 
 def populate_table_species(tokens):
@@ -230,89 +185,93 @@ def populate_table_incident(tokens):
     cur.executemany(sql, tokens)
 
 
-cleaning_unknown()
-species_kingdom_aligner()
+def main():
+    cleaning_unknown()
+    species_kingdom_aligner()
+    for batch in batch_reader(gv.CLEANED_DATABASE_PATH, batch_size=5000):
+        flight_db = []
+        airport_db = []
+        aircraft_db = []
+        airlines_db = []
+        incident_db = []
+        for line in batch:
+            if isheader:
+                isheader = False
+                continue
+            row = next(csv.reader([line]))
+            airport_icao = row[19].strip()
+            airline_icao = row[4].strip()
+            aircraft_id = row[6]
+            if row[31] not in species_set or not re.fullmatch(r'[A-Za-z]{4}', airport_icao) or not re.fullmatch(r'[A-Za-z]{3}', airline_icao):
+                continue
 
-for batch in batch_reader(gv.CLEANED_DATABASE_PATH, batch_size=5000):
-    flight_db = []
-    airport_db = []
-    aircraft_db = []
-    airlines_db = []
-    incident_db = []
-    for line in batch:
-        if isheader:
-            isheader = False
-            continue
-        row = next(csv.reader([line]))
-        airport_icao = row[19].strip()
-        airline_icao = row[4].strip()
-        aircraft_id = row[6]
-        if row[31] not in species_set or not re.fullmatch(r'[A-Za-z]{4}', airport_icao) or not re.fullmatch(r'[A-Za-z]{3}', airline_icao):
-            continue
+            """if airport_icao not in airport_set and re.fullmatch(r'[A-Za-z]{4}', airport_icao):
+                flight_set[airport_icao] = None
+                flight_db.append((
+                    airport_icao, row[20] 
+                ))"""
+            if airport_icao not in airport_set:
+                airport_set[airport_icao] = None
+                airport_db.append((
+                    row[20], airport_icao
+                ))
+            if aircraft_id not in aircraft_set:
+                aircraft_set[aircraft_id] = None
+                val = row[6]
+                parts = str(val).split('-')
+                parts += [None] * (3 - len(parts))
+                aircraft_db.append((
+                    row[7], row[10], parts[0], row[9], parts[1], aircraft_id
+                ))
+            if airline_icao not in airlines_set:
+                airlines_set[airline_icao] = None
+                airlines_db.append((
+                    row[5], airline_icao
+                ))
 
-        """if airport_icao not in airport_set and re.fullmatch(r'[A-Za-z]{4}', airport_icao):
-            flight_set[airport_icao] = None
-            flight_db.append((
-                airport_icao, row[20] 
-            ))"""
-        if airport_icao not in airport_set:
-            airport_set[airport_icao] = None
-            airport_db.append((
-                row[20], airport_icao
-            ))
-        if aircraft_id not in aircraft_set:
-            aircraft_set[aircraft_id] = None
-            val = row[6]
-            parts = str(val).split('-')
-            parts += [None] * (3 - len(parts))
-            aircraft_db.append((
-                row[7], row[10], parts[0], row[9], parts[1], aircraft_id
-            ))
-        if airline_icao not in airlines_set:
-            airlines_set[airline_icao] = None
-            airlines_db.append((
-                row[5], airline_icao
-            ))
+        airport_db = populate_table_airports(airport_db)
+        airport_set.update({row["icao"]: row["aid"] for row in airport_db})
 
-    airport_db = populate_table_airports(airport_db)
-    airport_set.update({row["icao"]: row["aid"] for row in airport_db})
+        aircraft_db = populate_table_aircraft(aircraft_db)
+        aircraft_set.update({row["aircraft"]: row["plane_id"]
+                            for row in aircraft_db})
 
-    aircraft_db = populate_table_aircraft(aircraft_db)
-    aircraft_set.update({row["aircraft"]: row["plane_id"]
-                        for row in aircraft_db})
+        airlines_db = populate_table_airlines(airlines_db)
+        airlines_set.update({row["icao"]: row["aid"] for row in airlines_db})
 
-    airlines_db = populate_table_airlines(airlines_db)
-    airlines_set.update({row["icao"]: row["aid"] for row in airlines_db})
+        isheader = True
+        for line in batch:
+            if isheader:
+                isheader = False
+                continue
+            row = next(csv.reader([line]))
+            airport_icao = row[19].strip()
+            airline_icao = row[4].strip()
+            aircraft_id = row[6]
+            if row[31] not in species_set or not re.fullmatch(r'[A-Za-z]{4}', airport_icao) or not re.fullmatch(r'[A-Za-z]{3}', airline_icao):
+                continue
 
-    isheader = True
-    for line in batch:
-        if isheader:
-            isheader = False
-            continue
-        row = next(csv.reader([line]))
-        airport_icao = row[19].strip()
-        airline_icao = row[4].strip()
-        aircraft_id = row[6]
-        if row[31] not in species_set or not re.fullmatch(r'[A-Za-z]{4}', airport_icao) or not re.fullmatch(r'[A-Za-z]{3}', airline_icao):
-            continue
+            aircraft_id = aircraft_set[row[6]]
+            airport_id = airport_set[row[19]]
+            distance = str_to_float_convertor(row[29])
+            flight_id = 1  # row[]
+            flight_phase = row[24]
+            height = str_to_float_convertor(row[27])
+            incident_date = '/'.join([row[3], row[2], row[1]])
+            incident_date = datetime.strptime(incident_date, "%d/%m/%Y")
+            operator_id = airlines_set[row[4]]
+            precipitation = row[26]
+            record_id = row[0]
+            species_id = species_set[row[31]]
+            species_quantity = row[32]
+            speed = str_to_float_convertor(row[28])
+            visibility = row[25]
 
-        aircraft_id = aircraft_set[row[6]]
-        airport_id = airport_set[row[19]]
-        distance = str_to_float_convertor(row[29])
-        flight_id = 1  # row[]
-        flight_phase = row[24]
-        height = str_to_float_convertor(row[27])
-        incident_date = '/'.join([row[3], row[2], row[1]])
-        incident_date = datetime.strptime(incident_date, "%d/%m/%Y")
-        operator_id = airlines_set[row[4]]
-        precipitation = row[26]
-        record_id = row[0]
-        species_id = species_set[row[31]]
-        species_quantity = row[32]
-        speed = str_to_float_convertor(row[28])
-        visibility = row[25]
+            incident_db.append([record_id, incident_date, operator_id, aircraft_id, airport_id, flight_phase, visibility,
+                                precipitation, height, speed, distance, species_id, species_quantity, flight_id])
+        populate_table_incident(incident_db)
+        break
 
-        incident_db.append([record_id, incident_date, operator_id, aircraft_id, airport_id, flight_phase, visibility,
-                            precipitation, height, speed, distance, species_id, species_quantity, flight_id])
-    populate_table_incident(incident_db)
-    break
+
+if __name__ == "__main__":
+    main()

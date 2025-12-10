@@ -1,5 +1,7 @@
 SPECIES_PATH = "./data/species_details.csv"
 BATCH_SIZE = 5000
+README_TEMPLATE = "README.template.md"
+README = "README.md"
 AMBIGUOUS_SPECIES_PATH = "./data/ambiguous_species.csv"
 SPECIES_PATH = "./data/species_details.csv"
 RAW_DATABASE_PATH = './data/raw_database.csv'

@@ -1,17 +1,19 @@
 import requests
 import pandas as pd
-import csv  
+import csv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import global_vars as gv
-
+from tools import config
 FIELDNAMES = [
     "input_name", "usageKey", "scientificName", "canonicalName",
     "rank", "kingdom", "phylum", "class", "order", "family",
     "genus", "species", "taxonomicStatus"
 ]
 headers = {"Accept": "application/json"}
-def fetch_airport_data(list_airports=[]): 
-    TOKEN = "218666285bd4894309ab922ef8bff157"  
+
+
+def fetch_airport_data(list_airports=[]):
+    TOKEN = config["keys"]["TOKEN_AIRPORT"]
     URL = gv.URL_AIRPORT + TOKEN
     response = requests.get(URL, headers=headers)
     if response.status_code == 200:
@@ -22,7 +24,8 @@ def fetch_airport_data(list_airports=[]):
     else:
         print("Error:", response.text)
 
-def _fetch_one_species(species_name): 
+
+def _fetch_one_species(species_name):
     try:
         resp = requests.get(
             gv.URL_SPECIES,
