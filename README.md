@@ -2,11 +2,12 @@
 
 The starting point of this work was a csv file that contains the strike that happened between 1990 - 1992. The data contains 66 columns and 174104 raw rows.
 
-| Dtype   | Columns                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+Here is a description about the columns https://wildlife.faa.gov/assets/fieldlist.pdf
+| Dtype | Columns |
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| int64   | Record ID, Incident Year, Incident Month, Incident Day, Aircraft Damage, Radome Strike, Radome Damage, Windshield Strike, Windshield Damage, Nose Strike, Nose Damage, Engine1 Strike, Engine1 Damage, Engine2 Strike, Engine2 Damage, Engine3 Strike, Engine3 Damage, Engine4 Strike, Engine4 Damage, Engine Ingested, Propeller Strike, Propeller Damage, Wing or Rotor Strike, Wing or Rotor Damage, Fuselage Strike, Fuselage Damage, Landing Gear Strike, Landing Gear Damage, Tail Strike, Tail Damage, Lights Strike, Lights Damage, Other Strike, Other Damage |
-| float64 | Aircraft Mass, Engine Make, Engines, Engine2 Position, Engine4 Position, Height, Speed, Distance, Fatalities, Injuries                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| object  | Operator ID, Operator, Aircraft, Aircraft Type, Aircraft Make, Aircraft Model, Engine Model, Engine Type, Engine1 Position, Engine3 Position, Airport ID, Airport, State, FAA Region, Warning Issued, Flight Phase, Visibility, Precipitation, Species ID, Species Name, Species Quantity, Flight Impact                                                                                                                                                                                                                                                               |
+| int64 | Record ID, Incident Year, Incident Month, Incident Day, Aircraft Damage, Radome Strike, Radome Damage, Windshield Strike, Windshield Damage, Nose Strike, Nose Damage, Engine1 Strike, Engine1 Damage, Engine2 Strike, Engine2 Damage, Engine3 Strike, Engine3 Damage, Engine4 Strike, Engine4 Damage, Engine Ingested, Propeller Strike, Propeller Damage, Wing or Rotor Strike, Wing or Rotor Damage, Fuselage Strike, Fuselage Damage, Landing Gear Strike, Landing Gear Damage, Tail Strike, Tail Damage, Lights Strike, Lights Damage, Other Strike, Other Damage |
+| float64 | Aircraft Mass, Engine Make, Engines, Engine2 Position, Engine4 Position, Height, Speed, Distance, Fatalities, Injuries |
+| object | Operator ID, Operator, Aircraft, Aircraft Type, Aircraft Make, Aircraft Model, Engine Model, Engine Type, Engine1 Position, Engine3 Position, Airport ID, Airport, State, FAA Region, Warning Issued, Flight Phase, Visibility, Precipitation, Species ID, Species Name, Species Quantity, Flight Impact |
 
 The data was the base point from this I wanted to acheive the points below
 
@@ -44,16 +45,16 @@ Top 10 species by incident count:
 
 | Rank | Species | Taxonomic Class | Incidents |
 | --- | --- | --- | --- |
-| 1 | UNKNOWN SMALL BIRD |  | 887 |
-| 2 | GULL | Arfiviricetes | 689 |
-| 3 | SPARROW | Chytridiomycetes | 170 |
-| 4 | BLACKBIRD | Repensiviricetes | 144 |
-| 5 | ROCK PIGEON | Aves | 113 |
-| 6 | EUROPEAN STARLING | Aves | 95 |
-| 7 | CANADA GOOSE | Insthoviricetes | 83 |
-| 8 | WHITE-TAILED DEER | Mammalia | 74 |
-| 9 | DUCK | Aves | 71 |
-| 10 | HAWK | Insthoviricetes | 68 |
+| 1 | UNKNOWN SMALL BIRD |  | 27734 |
+| 2 | GULL | Arfiviricetes | 5381 |
+| 3 | UNKNOWN BIRD |  | 4524 |
+| 4 | MOURNING DOVE | Aves | 2787 |
+| 5 | SPARROW | Chytridiomycetes | 2257 |
+| 6 | EUROPEAN STARLING | Aves | 2249 |
+| 7 | BARN SWALLOW | Aves | 2065 |
+| 8 | ROCK PIGEON | Aves | 1625 |
+| 9 | HORNED LARK | Aves | 1446 |
+| 10 | KILLDEER | Aves | 1428 |
 
 ---
 
@@ -63,16 +64,16 @@ Bottom 10 species by incident count:
 
 | Rank | Species | Taxonomic Class | Incidents |
 | --- | --- | --- | --- |
-| 1 | SAVANNAH SPARROW | Aves | 1 |
-| 2 | EASTERN SCREECH-OWL | Aves | 1 |
-| 3 | DOMESTIC CAT | Mammalia | 1 |
-| 4 | OLD WORLD VULTURES |  | 1 |
-| 5 | NORTHERN MOCKINGBIRD | Aves | 1 |
-| 6 | GREEN-WINGED TEAL | Insthoviricetes | 1 |
-| 7 | YELLOW-BILLED CUCKOO | Aves | 1 |
-| 8 | WOODCHUCK | Revtraviricetes | 1 |
-| 9 | EASTERN KINGBIRD | Aves | 1 |
-| 10 | FOXES | Mammalia | 1 |
+| 1 | BUDGERIGAR | Papovaviricetes | 1 |
+| 2 | EVENING GROSBEAK | Aves | 1 |
+| 3 | BADGER | Pisoniviricetes | 1 |
+| 4 | POCKETED FREE-TAILED BAT | Mammalia | 1 |
+| 5 | RED-NECKED GREBE | Insthoviricetes | 1 |
+| 6 | EASTERN DIAMONDBACK RATTLESNAKE |  | 1 |
+| 7 | TUFTED TITMOUSE | Aves | 1 |
+| 8 | HELMETED GUINEAFOWL | Aves | 1 |
+| 9 | RUSTY BLACKBIRD | Aves | 1 |
+| 10 | SOOTY TERN | Aves | 1 |
 
 ---
 
@@ -83,16 +84,16 @@ Incident counts by class:
 
 | Class | Incidents |
 | --- | --- |
-|  | 937 |
-| Aves | 803 |
-| Arfiviricetes | 689 |
-| Insthoviricetes | 228 |
-| Chytridiomycetes | 170 |
-| Repensiviricetes | 144 |
-| Mammalia | 80 |
-| Trematoda | 41 |
-| Gastropoda | 23 |
-| Cyanophyceae | 12 |
+|  | 33314 |
+| Aves | 27492 |
+| Insthoviricetes | 5482 |
+| Arfiviricetes | 5382 |
+| Chytridiomycetes | 2257 |
+| Mammalia | 1382 |
+| Repensiviricetes | 1122 |
+| Gastropoda | 781 |
+| Trematoda | 652 |
+| Insecta | 351 |
 
 ---
 
@@ -103,16 +104,16 @@ Top 10 species by number of affected airports:
 
 | Rank | Species | Class | # Airports |
 | --- | --- | --- | --- |
-| 1 | UNKNOWN SMALL BIRD |  | 211 |
-| 2 | GULL | Arfiviricetes | 186 |
-| 3 | SPARROW | Chytridiomycetes | 98 |
-| 4 | BLACKBIRD | Repensiviricetes | 85 |
-| 5 | WHITE-TAILED DEER | Mammalia | 58 |
-| 6 | EUROPEAN STARLING | Aves | 58 |
-| 7 | ROCK PIGEON | Aves | 58 |
-| 8 | DUCK | Aves | 55 |
-| 9 | CANADA GOOSE | Insthoviricetes | 52 |
-| 10 | HAWK | Insthoviricetes | 49 |
+| 1 | UNKNOWN SMALL BIRD |  | 1019 |
+| 2 | GULL | Arfiviricetes | 568 |
+| 3 | UNKNOWN BIRD |  | 484 |
+| 4 | SPARROW | Chytridiomycetes | 399 |
+| 5 | WHITE-TAILED DEER | Mammalia | 374 |
+| 6 | MOURNING DOVE | Aves | 342 |
+| 7 | CANADA GOOSE | Insthoviricetes | 342 |
+| 8 | HAWK | Insthoviricetes | 327 |
+| 9 | KILLDEER | Aves | 296 |
+| 10 | EUROPEAN STARLING | Aves | 284 |
 
 ---
 
@@ -125,16 +126,16 @@ Top 10 airports by incident count:
 
 | Rank | Airport | ICAO | Incidents |
 | --- | --- | --- | --- |
-| 1 | DALLAS/FORT WORTH INTL ARPT | KDFW | 138 |
-| 2 | NASHVILLE INTL | KBNA | 81 |
-| 3 | CHICAGO O'HARE INTL ARPT | KORD | 65 |
-| 4 | JOHN F KENNEDY INTL | KJFK | 60 |
-| 5 | LA GUARDIA ARPT | KLGA | 60 |
-| 6 | NORFOLK INTL | KORF | 57 |
-| 7 | PHILADELPHIA INTL | KPHL | 47 |
-| 8 | SAN FRANCISCO INTL ARPT | KSFO | 47 |
-| 9 | PITTSBURGH INTL ARPT | KPIT | 44 |
-| 10 | MIAMI INTL | KMIA | 43 |
+| 1 | DALLAS/FORT WORTH INTL ARPT | KDFW | 2144 |
+| 2 | DENVER INTL AIRPORT | KDEN | 1950 |
+| 3 | SACRAMENTO INTL | KSMF | 1630 |
+| 4 | CHICAGO O'HARE INTL ARPT | KORD | 1554 |
+| 5 | PHILADELPHIA INTL | KPHL | 1276 |
+| 6 | ORLANDO INTL | KMCO | 1249 |
+| 7 | JOHN F KENNEDY INTL | KJFK | 1237 |
+| 8 | MEMPHIS INTL | KMEM | 1200 |
+| 9 | LA GUARDIA ARPT | KLGA | 1182 |
+| 10 | SALT LAKE CITY INTL | KSLC | 1179 |
 
 ---
 
@@ -145,16 +146,16 @@ Top 10 airlines by incident count:
 
 | Rank | Airline | ICAO | Incidents |
 | --- | --- | --- | --- |
-| 1 | AMERICAN AIRLINES | AAL | 811 |
-| 2 | BUSINESS | BUS | 468 |
-| 3 | 1US AIRWAYS | USA | 341 |
-| 4 | SOUTHWEST AIRLINES | SWA | 154 |
-| 5 | MILITARY | MIL | 149 |
-| 6 | PRIVATELY OWNED | PVT | 147 |
-| 7 | UNITED AIRLINES | UAL | 117 |
-| 8 | DELTA AIR LINES | DAL | 91 |
-| 9 | NORTHWEST AIRLINES | NWA | 91 |
-| 10 | CONTINENTAL AIRLINES | COA | 68 |
+| 1 | BUSINESS | BUS | 10220 |
+| 2 | SOUTHWEST AIRLINES | SWA | 9626 |
+| 3 | AMERICAN AIRLINES | AAL | 7164 |
+| 4 | DELTA AIR LINES | DAL | 4284 |
+| 5 | UNITED AIRLINES | UAL | 3712 |
+| 6 | MILITARY | MIL | 3463 |
+| 7 | FEDEX EXPRESS | FDX | 2877 |
+| 8 | 1US AIRWAYS | USA | 2776 |
+| 9 | SKYWEST AIRLINES | SKW | 2348 |
+| 10 | AMERICAN EAGLE AIRLINES | EGF | 2169 |
 
 ---
 
@@ -167,9 +168,32 @@ Incident counts by year:
 
 | Year | Incidents |
 | --- | --- |
-| 1990 | 1192 |
+| 2014 | 7215 |
+| 2012 | 5717 |
+| 2013 | 5580 |
+| 2011 | 5171 |
+| 2015 | 4921 |
+| 2010 | 4905 |
+| 2009 | 4279 |
+| 2007 | 3271 |
+| 2008 | 3190 |
+| 2006 | 3107 |
+| 2004 | 2886 |
+| 2005 | 2833 |
+| 2002 | 2624 |
+| 2003 | 2596 |
+| 2000 | 2396 |
+| 2001 | 2393 |
+| 1999 | 1902 |
+| 1998 | 1878 |
+| 1997 | 1659 |
+| 1994 | 1603 |
+| 1995 | 1568 |
+| 1996 | 1511 |
+| 1993 | 1510 |
+| 1992 | 1489 |
 | 1991 | 1433 |
-| 1992 | 531 |
+| 1990 | 1192 |
 
 ---
 
@@ -180,18 +204,18 @@ By month:
 
 | Month # | Month | Incidents |
 | --- | --- | --- |
-| 5 | May | 401 |
-| 9 | September | 372 |
-| 8 | August | 346 |
-| 10 | October | 333 |
-| 7 | July | 324 |
-| 6 | June | 315 |
-| 11 | November | 255 |
-| 4 | April | 225 |
-| 3 | March | 181 |
-| 12 | December | 136 |
-| 1 | January | 136 |
-| 2 | February | 132 |
+| 8 | August | 11653 |
+| 9 | September | 10564 |
+| 7 | July | 10274 |
+| 10 | October | 8882 |
+| 5 | May | 7624 |
+| 6 | June | 6588 |
+| 4 | April | 5606 |
+| 11 | November | 5247 |
+| 3 | March | 3782 |
+| 12 | December | 3239 |
+| 1 | January | 2838 |
+| 2 | February | 2532 |
 
 Based on the incident data, wildlife strikes peak in **May** and **September**.  
 This pattern is consistent with independent migration data which I found on :

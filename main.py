@@ -9,7 +9,6 @@ airport_set = {}
 aircraft_set = {}
 airlines_set = {}
 species_set = {}
-isheader = True
 
 
 def populate_table_species(tokens):
@@ -186,6 +185,7 @@ def populate_table_incident(tokens):
 
 
 def main():
+    isheader = True
     cleaning_unknown()
     species_kingdom_aligner()
     for batch in batch_reader(gv.CLEANED_DATABASE_PATH, batch_size=5000):
@@ -270,7 +270,6 @@ def main():
             incident_db.append([record_id, incident_date, operator_id, aircraft_id, airport_id, flight_phase, visibility,
                                 precipitation, height, speed, distance, species_id, species_quantity, flight_id])
         populate_table_incident(incident_db)
-        break
 
 
 if __name__ == "__main__":

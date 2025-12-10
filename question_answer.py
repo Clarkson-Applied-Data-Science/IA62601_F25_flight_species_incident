@@ -122,7 +122,7 @@ def q_6_trends_over_time_by_year():
             COUNT(*) AS incident_count
         FROM {config['tables']['incident']}
         GROUP BY YEAR(incident_date)
-        ORDER BY year;
+        ORDER BY incident_count DESC;
     """
     cur.execute(sql)
     return cur.fetchall()
