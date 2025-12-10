@@ -2,5 +2,4 @@
 ml.ipynb
 config.yml
 __pycache__
-.DS_Store
-README.template.md
+.DS_Store 

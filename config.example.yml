@@ -1,0 +1,15 @@
+db:
+  user: ''
+  pw: ''
+  host: ''
+  db: ''
+tables: 
+  species: '' 
+  airport: ''
+  airline: ''
+  flight: ''
+  incident: ''
+  aircraft : ''
+  airline_aircraft : ''
+keys:
+  TOKEN_AIRPORT : ""
