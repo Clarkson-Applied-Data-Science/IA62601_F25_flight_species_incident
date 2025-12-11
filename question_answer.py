@@ -1,10 +1,7 @@
-import matplotlib.pyplot as plt
-import numpy as np
 import yaml
 from pathlib import Path
 from tools import config, connect_to_db, haversine
 import json
-import matplotlib.pyplot as plt
 config = yaml.safe_load(Path('config.yml').read_text())
 cur = connect_to_db()
 

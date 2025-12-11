@@ -40,7 +40,7 @@ Steps to start
 - 2 There is SQL dump of the table structure you can import that to Mysql then run the data
 - 3 Edit your config file use the names that you gave to your tables
 - 4 Run the data_fetcher.py
-- 5 Run main.py to populate table
+- 5 Run main.py to populate table. If you are checking my DB then you have to use the gurmesea_airline_strike DB
 - 6 Run generate_readme.py to see a textual explanation or run question_answer to see the answers
 
 ## Questions & Analyses
