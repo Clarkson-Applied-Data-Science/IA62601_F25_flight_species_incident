@@ -1,16 +1,7 @@
 from pathlib import Path
 from textwrap import dedent
 import global_vars as gv
-from question_answer import (
-    q_1_species_level_frequency,
-    q_1b_species_level_frequency,
-    q_2_class_level_patterns,
-    q_3_species_airport_spread,
-    q_4_airport_risk,
-    q_5_airline_incident_counts,
-    q_6_trends_over_time_by_year,
-    q_7_incidents_by_month
-)
+from question_answer import *
 
 
 def md_table(rows, headers):
@@ -74,6 +65,30 @@ Top 10 species by number of affected airports:
 {md_table(species_airport_rows, ["Rank", "Species", "Class", "# Airports"])}
             """).strip())
 
+    airports = q_8_high_risk_airport_neighbors(
+        top_n=5, neighbors=3)
+    distance_rows = [
+        (
+            i + 1,
+            f"{row['origin_name']} → {row['neighbor_name']}",
+            f"{row['origin_incident_count']} / {row['neighbor_incident_count']}",
+            f"{row['distance']:.1f}",
+        )
+        for i, row in enumerate(airports)
+    ]
+
+    sections.append(dedent(f"""
+_Are high-risk airports close together or spread out?_
+                           
+For each high-risk airport, I identified top 5 airports and their 2 nearest high-risk neighbors and computed the great-circle distance between them using haversine.
+The table below shows example airport pairs, their incident counts, and how far apart they are. This function can 
+be extended to all high-risk airports to analyze spatial clustering for the further study.
+
+{md_table(distance_rows,
+          ["Rank", "Airport pair (origin → neighbor)",
+           "Incidents (origin / neighbor)", "Distance (mile)"])}
+""").strip())
+
     airports = q_4_airport_risk(top_n=10)
     airport_rows = [
         (i + 1, row["airport_name"], row["icao"], row["incident_count"])
@@ -126,8 +141,8 @@ By month:
 
 {md_table(month_rows, ["Month #", "Month", "Incidents"])}
 
-Based on the incident data, wildlife strikes peak in **May** and **September**.  
-This pattern is consistent with independent migration data which I found on :
+Based on the incident data, wildlife strikes peak in fall and late spring.  
+This pattern is consistent with independent migration information which I found on :
 
 - eBird Status & Trends and BirdCast show the highest migration intensity during late spring (May) and early fall across much of North America.
 - USGS waterbird migration studies define spring migration as April–May and fall migration as August–October, bracketing the May and September peaks seen in our dataset.

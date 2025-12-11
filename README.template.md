@@ -1,6 +1,6 @@
 # Species & Aviation Data Loader
 
-The starting point of this work was a csv file that contains the strike that happened between 1990 - 1992. The data contains 66 columns and 174104 raw rows.
+The starting point of this work was a csv file downloaded from https://www.kaggle.com/datasets/faa/wildlife-strikes that contains the strike that happened between 1990 - 2015. The data contains 66 columns and 174104 raw rows.
 
 Here is a description about the columns https://wildlife.faa.gov/assets/fieldlist.pdf
 | Dtype | Columns |
@@ -33,5 +33,13 @@ Before running the project, copy config.example.yml to config.yml and update it 
 
 I have added the foreign key for depiction but you can remove them to make it easier.
 ![Diagram](db_diagram.png)
+
+Steps to start
+1 Download the raw data from https://www.kaggle.com/datasets/faa/wildlife-strikes put it under data folder or go and edit the global_vars to match your structre
+2 There is SQL dump of the table structure you can import that to Mysql then run the data
+3 Edit your config file use the names that you gave to your tables
+4 Run the data_fetcher.py
+5 Run main.py to populate table
+6 Run generate_readme.py to see a textual explanation or run question_answer to see the answers
 
 ## Questions & Analyses

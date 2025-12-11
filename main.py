@@ -3,12 +3,19 @@ from datetime import datetime
 from tools import config, connect_to_db, batch_reader, str_to_float_convertor, str_to_int_convertor
 import global_vars as gv
 import re
-
+import json
 flight_set = {}
 airport_set = {}
 aircraft_set = {}
 airlines_set = {}
 species_set = {}
+
+
+def truncate(tables):
+    cur = connect_to_db()
+    for table in tables:
+        sql = f"TRUNCATE TABLE `{table}`;"
+        cur.execute(sql)
 
 
 def populate_table_species(tokens):
@@ -37,7 +44,7 @@ def cleaning_unknown():
     is_header = True
     with open(gv.CLEANED_DATABASE_PATH, "w", newline="", encoding="utf-8") as out_f:
         writer = csv.writer(out_f)
-        for batch in batch_reader(gv.RAW_DATABASE_PATH, batch_size=5000):
+        for batch in batch_reader(gv.RAW_DATABASE_PATH, batch_size=gv.BATCH_SIZE):
             for line in batch:
                 row = next(csv.reader([line]))
                 if is_header:
@@ -66,7 +73,7 @@ def species_kingdom_aligner():
     isheader = True
     species_list = []
     species_seen = set()
-    for batch in batch_reader(gv.SPECIES_PATH, batch_size=5000):
+    for batch in batch_reader(gv.SPECIES_PATH, batch_size=gv.BATCH_SIZE):
         for line in batch:
             if isheader:
                 isheader = False
@@ -107,8 +114,8 @@ def populate_table_flight(tokens):
 
 def populate_table_airports(tokens):
     cur = connect_to_db()
-    # , 'latitude_deg', 'longitude_deg', 'elevation_ft']
-    col = ['name', 'icao']
+    col = ['name', 'icao', 'latitude_deg',
+           'longitude_deg', "city_code", "country"]
     sql = f"""
             INSERT INTO {config['tables']['airport']} ({','.join(col)})
             VALUES ({','.join(['%s'] * len(col))});
@@ -185,10 +192,20 @@ def populate_table_incident(tokens):
 
 
 def main():
+    truncate([
+        config['tables']['incident'],
+        config['tables']['airline'],
+        config['tables']['aircraft'],
+        config['tables']['airport'],
+        config['tables']['flight'],
+        config['tables']['species'],
+    ])
     isheader = True
     cleaning_unknown()
     species_kingdom_aligner()
-    for batch in batch_reader(gv.CLEANED_DATABASE_PATH, batch_size=5000):
+    with open(gv.AIRPORT_LOCATION_PATH, encoding="utf-8") as f:
+        airport_locations = json.load(f)
+    for batch in batch_reader(gv.CLEANED_DATABASE_PATH, batch_size=gv.BATCH_SIZE):
         flight_db = []
         airport_db = []
         aircraft_db = []
@@ -213,7 +230,11 @@ def main():
             if airport_icao not in airport_set:
                 airport_set[airport_icao] = None
                 airport_db.append((
-                    row[20], airport_icao
+                    row[20], airport_icao,
+                    airport_locations.get(airport_icao, {}).get("latitude"),
+                    airport_locations.get(airport_icao, {}).get("longitude"),
+                    airport_locations.get(airport_icao, {}).get("city"),
+                    airport_locations.get(airport_icao, {}).get("country"),
                 ))
             if aircraft_id not in aircraft_set:
                 aircraft_set[aircraft_id] = None

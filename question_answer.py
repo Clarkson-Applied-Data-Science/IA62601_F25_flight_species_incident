@@ -1,7 +1,10 @@
+import matplotlib.pyplot as plt
+import numpy as np
 import yaml
 from pathlib import Path
-from tools import config, connect_to_db
+from tools import config, connect_to_db, haversine
 import json
+import matplotlib.pyplot as plt
 config = yaml.safe_load(Path('config.yml').read_text())
 cur = connect_to_db()
 
@@ -146,3 +149,61 @@ def q_7_incidents_by_month():
 
 
 # print(json.dumps(q_7_incidents_by_month(), indent=2, default=str))
+
+
+def q_8_high_risk_airport_neighbors(top_n=10, neighbors=3, unit="miles"):
+    cur = connect_to_db()
+    sql = f"""
+        SELECT
+            a.aid,
+            a.name          AS airport_name,
+            a.icao          AS icao,
+            a.latitude_deg  AS latitude_deg,
+            a.longitude_deg AS longitude_deg,
+            COUNT(*)        AS incident_count
+        FROM {config['tables']['incident']} AS i
+        JOIN {config['tables']['airport']}  AS a
+          ON i.airport_id = a.aid
+        WHERE a.latitude_deg IS NOT NULL
+          AND a.longitude_deg IS NOT NULL
+        GROUP BY a.aid, a.name, a.icao, a.latitude_deg, a.longitude_deg
+        ORDER BY incident_count DESC
+        LIMIT %s;
+    """
+    cur.execute(sql, (top_n,))
+    high_risk = cur.fetchall()
+
+    results = []
+
+    for origin in high_risk:
+        lat0 = origin["latitude_deg"]
+        lon0 = origin["longitude_deg"]
+
+        neighbor_rows = []
+
+        for other in high_risk:
+            if other["aid"] == origin["aid"]:
+                continue
+
+            lat = other["latitude_deg"]
+            lon = other["longitude_deg"]
+
+            d = haversine(lat0, lon0, lat, lon)
+
+            neighbor_rows.append({
+                "origin_icao": origin["icao"],
+                "origin_name": origin["airport_name"],
+                "origin_incident_count": origin["incident_count"],
+                "neighbor_icao": other["icao"],
+                "neighbor_name": other["airport_name"],
+                "neighbor_incident_count": other["incident_count"],
+                "distance": d,
+                "unit": unit,
+            })
+        neighbor_rows.sort(key=lambda r: r["distance"])
+        results.extend(neighbor_rows[:neighbors])
+
+    return results
+
+
+# print(json.dumps(q_8_high_risk_airport_neighbors(top_n=20, neighbors=5), indent=2, default=str))
