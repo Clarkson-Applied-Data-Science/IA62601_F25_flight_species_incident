@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Dec 11, 2025 at 03:44 PM
+-- Generation Time: Dec 12, 2025 at 12:02 AM
 -- Server version: 8.0.34
 -- PHP Version: 8.2.8
 
@@ -18,16 +18,16 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `airline_strike`
+-- Database: `gurmesea_airline_strike`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `aircraft`
+-- Table structure for table `gurmesea_aircraft`
 --
 
-CREATE TABLE `aircraft` (
+CREATE TABLE `gurmesea_aircraft` (
   `plane_id` int NOT NULL,
   `type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `mass` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -40,10 +40,10 @@ CREATE TABLE `aircraft` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `airlines`
+-- Table structure for table `gurmesea_airlines`
 --
 
-CREATE TABLE `airlines` (
+CREATE TABLE `gurmesea_airlines` (
   `aid` int NOT NULL,
   `airline` varchar(100) NOT NULL,
   `callsign` varchar(50) DEFAULT NULL,
@@ -54,10 +54,10 @@ CREATE TABLE `airlines` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `airports`
+-- Table structure for table `gurmesea_airports`
 --
 
-CREATE TABLE `airports` (
+CREATE TABLE `gurmesea_airports` (
   `aid` int NOT NULL,
   `name` varchar(150) NOT NULL,
   `city_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -70,10 +70,10 @@ CREATE TABLE `airports` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `incidents`
+-- Table structure for table `gurmesea_incidents`
 --
 
-CREATE TABLE `incidents` (
+CREATE TABLE `gurmesea_incidents` (
   `record_id` int NOT NULL,
   `incident_date` date DEFAULT NULL,
   `operator_id` int DEFAULT NULL,
@@ -86,17 +86,16 @@ CREATE TABLE `incidents` (
   `speed` float DEFAULT NULL,
   `distance` float DEFAULT NULL,
   `species_id` int DEFAULT NULL,
-  `species_quantity` varchar(100) DEFAULT NULL,
-  `flight_id` int DEFAULT NULL
+  `species_quantity` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `species`
+-- Table structure for table `gurmesea_species`
 --
 
-CREATE TABLE `species` (
+CREATE TABLE `gurmesea_species` (
   `sid` int NOT NULL,
   `species_name` varchar(200) NOT NULL,
   `class` varchar(100) NOT NULL
@@ -107,39 +106,38 @@ CREATE TABLE `species` (
 --
 
 --
--- Indexes for table `aircraft`
+-- Indexes for table `gurmesea_aircraft`
 --
-ALTER TABLE `aircraft`
+ALTER TABLE `gurmesea_aircraft`
   ADD PRIMARY KEY (`plane_id`);
 
 --
--- Indexes for table `airlines`
+-- Indexes for table `gurmesea_airlines`
 --
-ALTER TABLE `airlines`
+ALTER TABLE `gurmesea_airlines`
   ADD PRIMARY KEY (`aid`);
 
 --
--- Indexes for table `airports`
+-- Indexes for table `gurmesea_airports`
 --
-ALTER TABLE `airports`
+ALTER TABLE `gurmesea_airports`
   ADD PRIMARY KEY (`aid`),
   ADD UNIQUE KEY `uk_airports_icao` (`icao`);
 
 --
--- Indexes for table `incidents`
+-- Indexes for table `gurmesea_incidents`
 --
-ALTER TABLE `incidents`
+ALTER TABLE `gurmesea_incidents`
   ADD PRIMARY KEY (`record_id`),
-  ADD KEY `fk_incidents_flight` (`flight_id`),
   ADD KEY `operator_id` (`operator_id`),
   ADD KEY `species_id` (`species_id`),
   ADD KEY `aircraft_id` (`aircraft_id`),
   ADD KEY `airport_id` (`airport_id`);
 
 --
--- Indexes for table `species`
+-- Indexes for table `gurmesea_species`
 --
-ALTER TABLE `species`
+ALTER TABLE `gurmesea_species`
   ADD PRIMARY KEY (`sid`);
 
 --
@@ -147,27 +145,27 @@ ALTER TABLE `species`
 --
 
 --
--- AUTO_INCREMENT for table `aircraft`
+-- AUTO_INCREMENT for table `gurmesea_aircraft`
 --
-ALTER TABLE `aircraft`
+ALTER TABLE `gurmesea_aircraft`
   MODIFY `plane_id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `airlines`
+-- AUTO_INCREMENT for table `gurmesea_airlines`
 --
-ALTER TABLE `airlines`
+ALTER TABLE `gurmesea_airlines`
   MODIFY `aid` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `airports`
+-- AUTO_INCREMENT for table `gurmesea_airports`
 --
-ALTER TABLE `airports`
+ALTER TABLE `gurmesea_airports`
   MODIFY `aid` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `species`
+-- AUTO_INCREMENT for table `gurmesea_species`
 --
-ALTER TABLE `species`
+ALTER TABLE `gurmesea_species`
   MODIFY `sid` int NOT NULL AUTO_INCREMENT;
 COMMIT;
 
