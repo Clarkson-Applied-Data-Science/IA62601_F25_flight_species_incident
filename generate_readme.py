@@ -141,13 +141,6 @@ By month:
 
 {md_table(month_rows, ["Month #", "Month", "Incidents"])}
 
-Based on the incident data, wildlife strikes peak in fall and late spring.  
-This pattern is consistent with independent migration information which I found on :
-
-- eBird Status & Trends and BirdCast show the highest migration intensity during late spring (May) and early fall across much of North America.
-- USGS waterbird migration studies define spring migration as April–May and fall migration as August–October, bracketing the May and September peaks seen in our dataset.
-
-Although this might feel over generalization since exact timing varies by species and latitude these external data sources support that our “migration" might be causing higher incident in these months.
 
 """).strip())
 

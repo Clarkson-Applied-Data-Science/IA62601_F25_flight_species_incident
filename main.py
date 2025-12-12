@@ -183,7 +183,7 @@ def populate_table_airlines(tokens):
 def populate_table_incident(tokens):
     cur = connect_to_db()
     col = ['record_id', 'incident_date', 'operator_id', 'aircraft_id', 'airport_id', 'flight_phase', 'visibility',
-           'precipitation', 'height', 'speed', 'distance', 'species_id', 'species_quantity', 'flight_id']
+           'precipitation', 'height', 'speed', 'distance', 'species_id', 'species_quantity']
     sql = f"""
             INSERT INTO {config['tables']['incident']} ({','.join(col)})
             VALUES ({','.join(['%s'] * len(col))});
@@ -221,12 +221,6 @@ def main():
             aircraft_id = row[6]
             if row[31] not in species_set or not re.fullmatch(r'[A-Za-z]{4}', airport_icao) or not re.fullmatch(r'[A-Za-z]{3}', airline_icao):
                 continue
-
-            """if airport_icao not in airport_set and re.fullmatch(r'[A-Za-z]{4}', airport_icao):
-                flight_set[airport_icao] = None
-                flight_db.append((
-                    airport_icao, row[20] 
-                ))"""
             if airport_icao not in airport_set:
                 airport_set[airport_icao] = None
                 airport_db.append((
@@ -275,7 +269,6 @@ def main():
             aircraft_id = aircraft_set[row[6]]
             airport_id = airport_set[row[19]]
             distance = str_to_float_convertor(row[29])
-            flight_id = 1  # row[]
             flight_phase = row[24]
             height = str_to_float_convertor(row[27])
             incident_date = '/'.join([row[3], row[2], row[1]])
@@ -289,7 +282,7 @@ def main():
             visibility = row[25]
 
             incident_db.append([record_id, incident_date, operator_id, aircraft_id, airport_id, flight_phase, visibility,
-                                precipitation, height, speed, distance, species_id, species_quantity, flight_id])
+                                precipitation, height, speed, distance, species_id, species_quantity])
         populate_table_incident(incident_db)
 
 
