@@ -18,16 +18,16 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gurmesea_airline_strike`
+-- Database: `airline_strike`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gurmesea_aircraft`
+-- Table structure for table `aircraft`
 --
 
-CREATE TABLE `gurmesea_aircraft` (
+CREATE TABLE `aircraft` (
   `plane_id` int NOT NULL,
   `type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `mass` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -40,10 +40,10 @@ CREATE TABLE `gurmesea_aircraft` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gurmesea_airlines`
+-- Table structure for table `airlines`
 --
 
-CREATE TABLE `gurmesea_airlines` (
+CREATE TABLE `airlines` (
   `aid` int NOT NULL,
   `airline` varchar(100) NOT NULL,
   `callsign` varchar(50) DEFAULT NULL,
@@ -54,10 +54,10 @@ CREATE TABLE `gurmesea_airlines` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gurmesea_airports`
+-- Table structure for table `airports`
 --
 
-CREATE TABLE `gurmesea_airports` (
+CREATE TABLE `airports` (
   `aid` int NOT NULL,
   `name` varchar(150) NOT NULL,
   `city_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -70,10 +70,10 @@ CREATE TABLE `gurmesea_airports` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gurmesea_incidents`
+-- Table structure for table `incidents`
 --
 
-CREATE TABLE `gurmesea_incidents` (
+CREATE TABLE `incidents` (
   `record_id` int NOT NULL,
   `incident_date` date DEFAULT NULL,
   `operator_id` int DEFAULT NULL,
@@ -92,10 +92,10 @@ CREATE TABLE `gurmesea_incidents` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gurmesea_species`
+-- Table structure for table `species`
 --
 
-CREATE TABLE `gurmesea_species` (
+CREATE TABLE `species` (
   `sid` int NOT NULL,
   `species_name` varchar(200) NOT NULL,
   `class` varchar(100) NOT NULL
@@ -106,28 +106,28 @@ CREATE TABLE `gurmesea_species` (
 --
 
 --
--- Indexes for table `gurmesea_aircraft`
+-- Indexes for table `aircraft`
 --
-ALTER TABLE `gurmesea_aircraft`
+ALTER TABLE `aircraft`
   ADD PRIMARY KEY (`plane_id`);
 
 --
--- Indexes for table `gurmesea_airlines`
+-- Indexes for table `airlines`
 --
-ALTER TABLE `gurmesea_airlines`
+ALTER TABLE `airlines`
   ADD PRIMARY KEY (`aid`);
 
 --
--- Indexes for table `gurmesea_airports`
+-- Indexes for table `airports`
 --
-ALTER TABLE `gurmesea_airports`
+ALTER TABLE `airports`
   ADD PRIMARY KEY (`aid`),
   ADD UNIQUE KEY `uk_airports_icao` (`icao`);
 
 --
--- Indexes for table `gurmesea_incidents`
+-- Indexes for table `incidents`
 --
-ALTER TABLE `gurmesea_incidents`
+ALTER TABLE `incidents`
   ADD PRIMARY KEY (`record_id`),
   ADD KEY `operator_id` (`operator_id`),
   ADD KEY `species_id` (`species_id`),
@@ -135,9 +135,9 @@ ALTER TABLE `gurmesea_incidents`
   ADD KEY `airport_id` (`airport_id`);
 
 --
--- Indexes for table `gurmesea_species`
+-- Indexes for table `species`
 --
-ALTER TABLE `gurmesea_species`
+ALTER TABLE `species`
   ADD PRIMARY KEY (`sid`);
 
 --
@@ -145,27 +145,27 @@ ALTER TABLE `gurmesea_species`
 --
 
 --
--- AUTO_INCREMENT for table `gurmesea_aircraft`
+-- AUTO_INCREMENT for table `aircraft`
 --
-ALTER TABLE `gurmesea_aircraft`
+ALTER TABLE `aircraft`
   MODIFY `plane_id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `gurmesea_airlines`
+-- AUTO_INCREMENT for table `airlines`
 --
-ALTER TABLE `gurmesea_airlines`
+ALTER TABLE `airlines`
   MODIFY `aid` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `gurmesea_airports`
+-- AUTO_INCREMENT for table `airports`
 --
-ALTER TABLE `gurmesea_airports`
+ALTER TABLE `airports`
   MODIFY `aid` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `gurmesea_species`
+-- AUTO_INCREMENT for table `species`
 --
-ALTER TABLE `gurmesea_species`
+ALTER TABLE `species`
   MODIFY `sid` int NOT NULL AUTO_INCREMENT;
 COMMIT;
 
